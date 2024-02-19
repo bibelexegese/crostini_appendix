@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+title: >-
+  Captions of Vat. gr. 752 from the illustrations on Ps 1–151 – Dataset
+message: >-
+  If you use this dataset, please cite it using the
+  metadata from this file.
+type: dataset
+version: "0.1 (beta)"
+keywords:
+  - "Biblioteca Apostolica Vaticana"
+  - "Vat. gr. 752"
+  - Illustrations
+identifiers:
+  - description: This is the source code of the website and the dataset
+    type: doi
+    value: 10.5281/zenodo.XXXX
+  - description: This is website using the dataset
+    type: url
+    value: https://nbn-resolving.org/urn:nbn:de:kobv:b4-20240508092805405-4787747-2
+date-released: 2024-05-29
+license: CC-BY-NC-4.0
+authors:
+  - given-names: Barbara
+    family-names: Crostini
+    email: crostini.barbara@gmail.com
+    affiliation: >-
+      Newmaninstitutet Hogskola for teologi filosofi och kultur: Uppsala, SE
+    orcid: 'https://orcid.org/0000-0001-9138-1766'
+preferred-citation:
+  authors:
+    - given-names: Barbara
+      family-names: Crostini
+  title: >-
+    Captions of Vat. gr. 752 from the illustrations on Ps 1–151 – Dataset
+  type: data
+  version: "0.1 (beta)"
+  year: 2024
+  identifiers:
+  - type: url
+    value: https://nbn-resolving.org/urn:nbn:de:kobv:b4-20240508092805405-4787747-2

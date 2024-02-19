@@ -1,0 +1,793 @@
+---
+title: "The Captions to the Illustrations in MS Vaticanus graecus 752 – Dataset"
+author: "Barbara Crostini"
+
+format: 
+    dashboard:
+        embed-resources: true
+        date-modified: 2024-05-29
+        doi: XXXX
+        urn: urn:nbn:de:kobv:b4-20240508092805405-4787747-2
+        keywords: Biblioteca Apostolica Vaticana, Vat. gr. 752, Illustrations
+        license: CC-BY-NC
+        output-file: index
+        theme: cosmo
+        nav-buttons: 
+            - icon: book
+              href: ../index.html
+            - icon: github
+              href: https://github.com/bibelexegese/crostini_appendix
+---
+
+# Psalm-ID
+
+## Row {heigth=40%}
+
+### Column {width=10%}
+
+```{ojs}
+viewof all_ids = Inputs.select(data.map(d => d["Psalm-ID"]), {unique: true, multiple: true, format: x => "Ps "+x, value: ["1a"]})
+
+```
+
+
+
+### Column {width=25%}
+::: {.card title="Caption Image"}
+```{ojs}
+Plot.image([{ url: id_imagelink_c }], { x: 0, src: "url", width: 400 }).plot({
+  x: { axis: null },
+});
+```
+:::
+
+### Column {width=20%}
+::: {.card title="Description"}
+ID of this entry:
+: Ps ${id_id}
+
+Psalm:
+: ${id_psalm}
+
+Folio:
+: ${id_folio}
+
+Transcription:
+: ${id_transcription}
+
+Translation:
+: ${id_translation}
+:::
+
+### Column {width=20%}
+::: {.card title="Information"}
+Type of caption:
+: ${id_captiontype}
+
+Ink:
+: ${id_ink}
+
+Hand:
+: ${id_hand}
+
+Conservation:
+: ${id_conservation}
+
+Source:
+: ${id_source}
+
+DeWald Reference:
+: ${id_dw}
+
+Remarks:
+: ${id_remarks}
+:::
+
+## Row {heigth=60%}
+
+### Column {width=35%}
+::: {.card title="Detail"}
+```{ojs}
+Plot.image([{ url: id_imagelink }], { x: 0, src: "url", width: 500 }).plot({
+  x: { axis: null },
+})
+```
+:::
+### Column {width=65%}
+::: {.card title="Page"}
+```{ojs}
+id_map = {
+  const id_container = html`<div id="id_container" style="height:400px;">`;
+  yield id_container;
+
+  const id_map = L.map("id_container", {
+    center: [0, 0],
+    crs: L.CRS.Simple,
+    zoom: 0,
+    minZoom: 0,
+    maxZoom: 5,
+  });
+
+
+  import("https://unpkg.com/leaflet-iiif@3.0.0/leaflet-iiif.js").then(() => {
+    L.tileLayer.iiif(id_manifestUrl, {
+  attribution: '<a href="'+id_attributionUrl+'">All images © Biblioteca Apostolica Vaticana</a>'
+}).addTo(id_map);
+})}
+id_attributionUrl = "https://digi.vatlib.it/view/"+id_imagelink[0].split('/')[4]
+id_manifestUrl = id_imagelink[0].split('/').slice(0, -4).join('/')+"/info.json"
+```
+:::
+
+```{ojs}
+//| output: false
+
+ids = data.map(d => d["Psalm-ID"]).filter(
+  (item, index, inputArray) =>
+    inputArray.indexOf(item) == index
+)
+
+all_ids_f = data.filter(function(pls) {
+  return all_ids.includes(pls["Psalm-ID"]);
+  // matching funktioniert nicht
+})
+
+id_id = all_ids_f.map(d => d["Psalm-ID"])
+
+id_psalm = all_ids_f.map(d => d["Ps"])
+
+id_folio = all_ids_f.map(d => d["f."])
+
+id_imagelink = all_ids_f.map(d => d["IIIF-Link image"])
+
+id_imagelink_c = all_ids_f.map(d => d["IIIF-Link caption"])
+
+id_caption_id = all_ids_f.keys()
+
+id_transcription = all_ids_f.map(d => d["Transcription"])
+
+id_translation = all_ids_f.map(d => d["Translation"])
+
+id_dw = all_ids_f.map(d => d["DW Ref."])
+
+id_conservation = all_ids_f.map(d => d["Conservation"])
+
+id_ink = all_ids_f.map(d => d["Ink"])
+
+id_hand = all_ids_f.map(d => d["Hand"])
+
+id_captiontype = all_ids_f.map(d => d["Type of caption (subcategory)"])
+
+id_remarks = all_ids_f.map(d => d["Remarks"])
+
+id_source = all_ids_f.map(d => d["Source"])
+```
+
+
+# Psalms
+
+## Row {heigth=40%}
+
+### Column {width=15%}
+```{ojs}
+viewof all_psalms = Inputs.select(data.map(d => d["Ps"]), {sort: true, unique: true, label: "Psalm", multiple: true, value: [1]})
+
+viewof p_caption = Inputs.select(p_caption_id, {label: "Result no.", format: x => x+1})
+
+```
+
+
+### Column {width=30%}
+::: {.card title="Caption Image"}
+```{ojs}
+Plot.image([{ url: p_imagelink_c[p_caption] }], { x: 0, src: "url", width: 400 }).plot({
+  x: { axis: null },
+});
+```
+:::
+
+### Column {width=20%}
+::: {.card title="Description"}
+ID of this entry:
+: Ps ${p_id[p_caption]}
+
+Folio:
+: ${p_folio[p_caption]}
+
+Transcription:
+: ${p_transcription[p_caption]}
+
+Translation:
+: ${p_translation[p_caption]}
+:::
+
+### Column {width=20%}
+::: {.card title="Information"}
+Type of caption:
+: ${p_captiontype[p_caption]}
+
+Ink:
+: ${p_ink[p_caption]}
+
+Hand:
+: ${p_hand[p_caption]}
+
+Conservation:
+: ${p_conservation[p_caption]}
+
+Source:
+: ${p_source[p_caption]}
+
+DeWald Reference:
+: ${p_dw[p_caption]}
+
+Remarks:
+: ${p_remarks[p_caption]}
+:::
+
+## Row {heigth=60%}
+
+### Column {width=35%}
+::: {.card title="Detail"}
+```{ojs}
+Plot.image([{ url: p_imagelink[p_caption] }], { x: 0, src: "url", width: 500 }).plot({
+  x: { axis: null },
+})
+```
+:::
+
+### Column {width=65%}
+::: {.card title="Page"}
+```{ojs}
+p_map = {
+  const p_container = html`<div id="p_container" style="height:400px;">`;
+  yield p_container;
+
+  const p_map = L.map("p_container", {
+    center: [0, 0],
+    crs: L.CRS.Simple,
+    zoom: 0,
+    minZoom: 0,
+    maxZoom: 5
+  });
+
+
+  import("https://unpkg.com/leaflet-iiif@3.0.0/leaflet-iiif.js").then(() => {
+    L.tileLayer.iiif(p_manifestUrl, {
+  attribution: '<a href="'+p_attributionUrl+'">All images © Biblioteca Apostolica Vaticana</a>'
+}).addTo(p_map);
+})}
+p_attributionUrl = "https://digi.vatlib.it/view/"+p_imagelink[p_caption].split('/')[4]
+p_manifestUrl = p_imagelink[p_caption].split('/').slice(0, -4).join('/')+"/info.json"
+```
+:::
+
+
+
+```{ojs}
+//| output: false
+
+ps = data.map(d => d["Ps"]).filter(
+  (item, index, inputArray) =>
+    inputArray.indexOf(item) == index
+)
+
+all_psalms_f = data.filter(function(pls) {
+  return all_psalms.includes(pls["Ps"]);
+})
+
+p_id = all_psalms_f.map(d => d["Psalm-ID"])
+
+p_folio = all_psalms_f.map(d => d["f."])
+
+p_imagelink = all_psalms_f.map(d => d["IIIF-Link image"])
+
+p_imagelink_c = all_psalms_f.map(d => d["IIIF-Link caption"])
+
+p_caption_id = all_psalms_f.keys()
+
+p_transcription = all_psalms_f.map(d => d["Transcription"])
+
+p_translation = all_psalms_f.map(d => d["Translation"])
+
+p_dw = all_psalms_f.map(d => d["DW Ref."])
+
+p_conservation = all_psalms_f.map(d => d["Conservation"])
+
+p_ink = all_psalms_f.map(d => d["Ink"])
+
+p_hand = all_psalms_f.map(d => d["Hand"])
+
+p_captiontype = all_psalms_f.map(d => d["Type of caption (subcategory)"])
+
+p_remarks = all_psalms_f.map(d => d["Remarks"])
+
+p_source = all_psalms_f.map(d => d["Source"])
+```
+
+# Folia
+
+## Row {heigth=40%}
+
+### Column {width=15%}
+```{ojs}
+viewof folia = Inputs.select(folio, {label: "Folio", multiple: true, value: ["19r"]})
+
+viewof caption = Inputs.select(caption_id, {label: "Result no.", format: x => x+1})
+```
+
+
+### Column {width=30%}
+::: {.card title="Caption Image"}
+```{ojs}
+Plot.image([{ url: imagelink_c[caption] }], { x: 0, src: "url", width: 400 }).plot({
+  x: { axis: null },
+});
+```
+:::
+
+### Column {width=20%}
+::: {.card title="Description"}
+ID of this entry:
+: Ps ${id[caption]}
+
+Psalm:
+: ${psalm[caption]}
+
+Transcription:
+: ${transcription[caption]}
+
+Translation:
+: ${translation[caption]}
+:::
+
+### Column {width=20%}
+::: {.card title="Information"}
+Type of caption:
+: ${captiontype[caption]}
+
+Ink:
+: ${ink[caption]}
+
+Hand:
+: ${hand[caption]}
+
+Conservation:
+: ${conservation[caption]}
+
+Source:
+: ${source[caption]}
+
+DeWald Reference:
+: ${dw[caption]}
+
+Remarks:
+: ${remarks[caption]}
+:::
+
+
+
+## Row {heigth=60%}
+
+### Column {width=35%}
+::: {.card title="Detail"}
+```{ojs}
+Plot.image([{ url: imagelink[caption] }], { x: 0, src: "url", width: 500 }).plot({
+  x: { axis: null },
+})
+```
+:::
+
+
+### Column {width=65%}
+::: {.card title="Page"}
+```{ojs}
+map = {
+  const container = html`<div id="container" style="height:400px;">`;
+  yield container;
+
+  const map = L.map("container", {
+    center: [0, 0],
+    crs: L.CRS.Simple,
+    zoom: 0,
+    minZoom: 0,
+    maxZoom: 5
+  });
+
+
+import("https://unpkg.com/leaflet-iiif@3.0.0/leaflet-iiif.js").then(() => {
+    L.tileLayer.iiif(manifestUrl, {
+  attribution: '<a href="'+attributionUrl+'">All images © Biblioteca Apostolica Vaticana</a>'
+}).addTo(map);
+})}
+attributionUrl = "https://digi.vatlib.it/view/"+imagelink[caption].split('/')[4]
+manifestUrl = imagelink[caption].split('/').slice(0, -4).join('/')+"/info.json"
+```
+:::
+
+```{ojs}
+//| output: false
+folio = data.map(d => d["f."]).filter(
+  (item, index, inputArray) =>
+    inputArray.indexOf(item) == index
+)
+
+filtered = data.filter(function(folio) {
+  return folia.includes(folio["f."]);
+})
+
+id = filtered.map(d => d["Psalm-ID"])
+
+psalm = filtered.map(d => d["Ps"])
+
+imagelink = filtered.map(d => d["IIIF-Link image"])
+
+imagelink_c = filtered.map(d => d["IIIF-Link caption"])
+
+caption_id = filtered.keys()
+
+transcription = filtered.map(d => d["Transcription"])
+
+translation = filtered.map(d => d["Translation"])
+
+dw = filtered.map(d => d["DW Ref."])
+
+conservation = filtered.map(d => d["Conservation"])
+
+ink = filtered.map(d => d["Ink"])
+
+hand = filtered.map(d => d["Hand"])
+
+captiontype = filtered.map(d => d["Type of caption (subcategory)"])
+
+remarks = filtered.map(d => d["Remarks"])
+
+source = filtered.map(d => d["Source"])
+```
+
+
+# Hands
+## Row {heigth=40%}
+
+### Column {width=20%}
+```{ojs}
+viewof all_hands = Inputs.select(data.map(d => d["Hand"]), {sort: true, unique: true, label: "Hand", multiple: true, value: ["E"]})
+
+viewof h_caption = Inputs.select(h_caption_id, {label: "Result no.", format: x => x+1})
+
+```
+
+### Column {width=30%}
+::: {.card title="Caption Image"}
+```{ojs}
+Plot.image([{ url: h_imagelink_c[h_caption] }], { x: 0, src: "url", width: 400 }).plot({
+  x: { axis: null },
+});
+```
+:::
+
+### Column {width=20%}
+::: {.card title="Description"}
+ID of this entry:
+: Ps ${h_id[h_caption]}
+
+Folio:
+: ${h_folio[h_caption]}
+
+Psalm:
+: ${h_psalm[h_caption]}
+
+Transcription:
+: ${h_transcription[h_caption]}
+
+Translation:
+: ${h_translation[h_caption]}
+:::
+
+### Column {width=20%}
+::: {.card title="Information"}
+Type of caption:
+: ${h_captiontype[h_caption]}
+
+Ink:
+: ${h_ink[h_caption]}
+
+Hand:
+: ${h_hand[h_caption]}
+
+Conservation:
+: ${h_conservation[h_caption]}
+
+Source:
+: ${h_source[h_caption]}
+
+DeWald Reference:
+: ${h_dw[h_caption]}
+
+Remarks:
+: ${h_remarks[h_caption]}
+:::
+
+## Row {heigth=60%}
+
+### Column {width=30%}
+::: {.card title="Detail"}
+```{ojs}
+Plot.image([{ url: h_imagelink[h_caption] }], { x: 0, src: "url", width: 500 }).plot({
+  x: { axis: null },
+})
+```
+:::
+
+
+### Column {width=65%}
+::: {.card title="Page"}
+```{ojs}
+h_map = {
+  const h_container = html`<div id="h_container" style="height:400px;">`;
+  yield h_container;
+
+  const h_map = L.map("h_container", {
+    center: [0, 0],
+    crs: L.CRS.Simple,
+    zoom: 0,
+    minZoom: 0,
+    maxZoom: 5
+  });
+
+
+  import("https://unpkg.com/leaflet-iiif@3.0.0/leaflet-iiif.js").then(() => {
+    L.tileLayer.iiif(h_manifestUrl, {
+  attribution: '<a href="'+h_attributionUrl+'">All images © Biblioteca Apostolica Vaticana</a>'
+}).addTo(h_map);
+})}
+h_attributionUrl = "https://digi.vatlib.it/view/"+h_imagelink[h_caption].split('/')[4]
+h_manifestUrl = h_imagelink[h_caption].split('/').slice(0, -4).join('/')+"/info.json"
+```
+:::
+
+
+```{ojs}
+//| output: false
+all_hands_f = data.filter(function(hds) {
+  return all_hands.includes(hds["Hand"]);
+})
+
+h_id = all_hands_f.map(d => d["Psalm-ID"])
+
+h_psalm = all_hands_f.map(d => d["Ps"])
+
+h_folio = all_hands_f.map(d => d["f."])
+
+h_imagelink = all_hands_f.map(d => d["IIIF-Link image"])
+
+h_imagelink_c = all_hands_f.map(d => d["IIIF-Link caption"])
+
+h_caption_id = all_hands_f.keys()
+
+h_transcription = all_hands_f.map(d => d["Transcription"])
+
+h_translation = all_hands_f.map(d => d["Translation"])
+
+h_dw = all_hands_f.map(d => d["DW Ref."])
+
+h_conservation = all_hands_f.map(d => d["Conservation"])
+
+h_ink = all_hands_f.map(d => d["Ink"])
+
+h_hand = all_hands_f.map(d => d["Hand"])
+
+h_captiontype = all_hands_f.map(d => d["Type of caption (subcategory)"])
+
+h_remarks = all_hands_f.map(d => d["Remarks"])
+
+h_source = all_hands_f.map(d => d["Source"])
+```
+
+
+# Search
+
+## Row {.tabset}
+
+### Search
+
+#### {width=20%}
+```{ojs}
+
+viewof search = Inputs.search(data, {
+  placeholder: "Search",
+  columns: ["Ps", "f.", "Transcription", "Translation", "DW Ref.", "Source", "Conservation", "Ink", "Hand", "Type of caption (subcategory)", "Remarks"],
+})
+
+md`${rows.length} item(s) selected`
+```
+::: {.card title="How to navigate this table"}
+You can do a simple full text search on the data. 
+
+If you hover over the table rows you can select rows by checking the checkboxes. 
+
+The results of the search (and/or selection) are shown in the “Results” tab.
+
+You can also sort the table columns by clicking on the column name.
+:::
+
+#### {width=80%}
+```{ojs}
+
+viewof rows = Inputs.table(search, {
+  rows: 250,
+  format: {
+    "IIIF-Link image": d => htl.html`<span style="white-space:normal">${d}`,
+    "Transcription": d => htl.html`<span style="white-space:normal">${d}`,
+    "IIIF-Link caption": d => htl.html`<span style="white-space:normal">${d}`,
+    "Translation": d => htl.html`<span style="white-space:normal">${d}`,
+    "Source": d => htl.html`<span style="white-space:normal">${d}`,
+    "Conservation": d => htl.html`<span style="white-space:normal">${d}`,
+    "Ink": d => htl.html`<span style="white-space:normal">${d}`,
+    "Type of caption (subcategory)": d => htl.html`<span style="white-space:normal">${d}`,
+    "Remarks": d => htl.html`<span style="white-space:normal">${d}`,
+  },
+})
+data = FileAttachment("data/crostini_dataset.tsv").tsv({ typed: true })
+```
+
+### Results
+
+#### Column {width=25%}
+
+##### {height="15%"}
+```{ojs}
+viewof r_caption = Inputs.select(r_caption_id, {label: "Result no.", format: x => x+1})
+```
+
+##### {height="85%"}
+::: {.card title="Page"}
+```{ojs}
+r_map = {
+  const r_container = html`<div id="r_container" style="height:500px;">`;
+  yield r_container;
+
+  const r_map = L.map("r_container", {
+    center: [0, 0],
+    crs: L.CRS.Simple,
+    zoom: 0,
+    minZoom: 0,
+    maxZoom: 5
+  });
+
+
+import("https://unpkg.com/leaflet-iiif@3.0.0/leaflet-iiif.js").then(() => {
+    L.tileLayer.iiif(r_manifestUrl, {
+  attribution: '<a href="'+r_attributionUrl+'">All images © Biblioteca Apostolica Vaticana</a>'
+}).addTo(r_map);
+})}
+r_attributionUrl = "https://digi.vatlib.it/view/"+r_imagelink[0].split('/')[4]
+r_manifestUrl = r_imagelink[r_caption].split('/').slice(0, -4).join('/')+"/info.json"
+```
+:::
+
+
+#### Column {width=25%}
+::: {.card title="Detail"}
+```{ojs}
+Plot.image([{ url: r_imagelink[r_caption] }], { x: 0, src: "url", width: 500 }).plot({
+  x: { axis: null },
+})
+```
+:::
+
+#### Column {width=25%}
+::: {.card title="Caption Image"}
+```{ojs}
+Plot.image([{ url: r_imagelink_c[r_caption] }], { x: 0, src: "url", width: 400 }).plot({
+  x: { axis: null },
+});
+```
+:::
+
+#### Column {width=25%}
+::: {.card title="Description and Information"}
+
+ID of this entry:
+: Ps ${r_id[r_caption]}
+
+Folio:
+: ${r_folio[r_caption]}
+
+Psalm:
+: ${r_psalm[r_caption]}
+
+Transcription:
+: ${r_transcription[r_caption]}
+
+Translation:
+: ${r_translation[r_caption]}
+
+Type of caption:
+: ${r_captiontype[r_caption]}
+
+Ink:
+: ${r_ink[r_caption]}
+
+Hand:
+: ${r_hand[r_caption]}
+
+Conservation:
+: ${r_conservation[r_caption]}
+
+Source:
+: ${r_source[r_caption]}
+
+DeWald Reference:
+: ${r_dw[r_caption]}
+
+Remarks:
+: ${r_remarks[r_caption]}
+:::
+
+```{ojs}
+//| output: false
+
+r_id = rows.map(d => d["Psalm-ID"])
+
+r_psalm = rows.map(d => d["Ps"])
+
+r_folio = rows.map(d => d["f."])
+
+r_imagelink = rows.map(d => d["IIIF-Link image"])
+
+r_imagelink_c = rows.map(d => d["IIIF-Link caption"])
+
+r_caption_id = rows.keys()
+
+r_transcription = rows.map(d => d["Transcription"])
+
+r_translation = rows.map(d => d["Translation"])
+
+r_dw = rows.map(d => d["DW Ref."])
+
+r_conservation = rows.map(d => d["Conservation"])
+
+r_ink = rows.map(d => d["Ink"])
+
+r_hand = rows.map(d => d["Hand"])
+
+r_captiontype = rows.map(d => d["Type of caption (subcategory)"])
+
+r_remarks = rows.map(d => d["Remarks"])
+
+r_source = rows.map(d => d["Source"])
+```
+# About
+
+::: {.card}
+This is the dataset to Barbara Crostini, “The Captions to the Illustrations in MS Vaticanus graecus 752: Overview and Classification,” in *Research on Psalter Catenae: Current Trends and Recent Developments* (ed. Cordula Bandt and Reinhart Ceulemans; TU 197; Berlin/Boston 2024), 245–275.
+
+The source code of this website and the dataset used is at <https://github.com/bibelexegese/crostini_appendix> [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX).
+
+## Cite as
+Barbara Crostini, The Captions to the Illustrations in MS Vaticanus graecus 752 – Dataset, v0.1 (beta), 2024, <https://nbn-resolving.org/urn:nbn:de:kobv:b4-20240508092805405-4787747-2>.
+
+:::
+
+::: {.card}
+## Abbreviations used
+
+- DeWald: Ernest T. DeWald, The Illustrations in the Manuscripts of the Septuagint, III, Psalms and Odes, 2, Vaticanus Graecus 752 (Princeton/London/The Hague, 1942).
+- ‘Transcription’: See the Note on abbreviations at the end of the article (pp. §§§–§§§).
+- ‘Source’: A slash sign (/) denotes captions for which no apparent explanation could be found.
+- ‘Abbr.’ denotes that the caption reflects only a part of a longer gloss in the catena commentary.
+- ‘Hands’: U = unidentified, uncategorized (see n. 31 in the article).
+- ‘Ps-ID’: Small letters after the numbers refer to cases where multiple captions are found, relating to several illustrations for the same Psalm.
+:::
+
+
+::: {.card}
+## Rights
+All data is available under a [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).
+
+All Images are © [Biblioteca Apostolica Vaticana (BAV)](https://www.vaticanlibrary.va/) and provided through [BAV's IIIF service](https://digi.vatlib.it/).
+
+## Technical Implementation
+[Annette von Stockhausen](mailto:annette.von_stockhausen@bbaw.de) with the help of [Quarto](https://quarto.org/) and [Leaflet](https://leafletjs.com/)/[Leaflet-IIIF](https://github.com/mejackreed/Leaflet-IIIF). The web service is provided and maintained by [TELOTA - IT/DH](https://www.bbaw.de/bbaw-digital/telota).
+:::
