@@ -5,7 +5,7 @@ message: >-
   If you use this dataset, please cite it using the
   metadata from this file.
 type: dataset
-version: "0.1 (beta)"
+version: "0.5 (public beta)"
 keywords:
   - "Biblioteca Apostolica Vaticana"
   - "Vat. gr. 752"
@@ -13,7 +13,7 @@ keywords:
 identifiers:
   - description: This is the source code of the website and the dataset
     type: doi
-    value: 10.5281/zenodo.XXXX
+    value: 10.5281/zenodo.11388541
   - description: This is website using the dataset
     type: url
     value: https://nbn-resolving.org/urn:nbn:de:kobv:b4-20240508092805405-4787747-2
@@ -33,7 +33,7 @@ preferred-citation:
   title: >-
     Captions of Vat. gr. 752 from the illustrations on Ps 1–151 – Dataset
   type: data
-  version: "0.1 (beta)"
+  version: "0.5 (public beta)"
   year: 2024
   identifiers:
   - type: url
